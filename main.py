@@ -1,16 +1,18 @@
 import random as rand
 import pygame
-from pygame.locals import * # type: ignore
+from pygame.locals import *
 
 from player import Player
 from plat import Plat
 
 pygame.init()
 
+
 width = 400
 height = 533
-
+score = 0
 fps = 60
+
 
 framePerSec = pygame.time.Clock()
 
@@ -29,8 +31,8 @@ steps = 10
 
 
 platform = Plat()
-platform.rect.x = rand.randint(0, width) # type: ignore
-platform.rect.y = height - 50 # type: ignore
+platform.rect.x = rand.randint(0, width - 50)
+platform.rect.y = height - 50
 platform_list = pygame.sprite.Group()
 platform_list.add(platform)
 
@@ -46,19 +48,27 @@ while running:
                 player.control(-steps, 0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 player.control(steps, 0)
-        
+            if event.key == pygame.K_SPACE:
+                player.jump()
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord('a'):
                 player.control(steps, 0)
             if event.key == pygame.K_RIGHT or event.key == ord('d'):
                 player.control(-steps, 0)
-        
-        
+
+    if player.is_collided_with(platform):
+            player.jump()
+            score +=1
+            print(score)
+
     player.gravity()
     player.update()
     player_list.draw(window)
     platform_list.draw(window)
     framePerSec.tick(fps)
     pygame.display.update()
+    if int(player.rect.y) > height:
+        running = False
     
 pygame.quit()

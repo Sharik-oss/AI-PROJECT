@@ -46,3 +46,9 @@ class Player(pygame.sprite.Sprite):
                 
     def gravity(self):
         self.movey += 0.1
+
+    def jump(self):
+        self.movey -= 10
+
+    def is_collided_with(self, sprite):
+        return self.rect.colliderect(sprite.rect)
