@@ -4,7 +4,7 @@ import sys
 
 
 
-
+vec = pygame.math.Vector2
 ani = 4
 
 class Player(pygame.sprite.Sprite):
